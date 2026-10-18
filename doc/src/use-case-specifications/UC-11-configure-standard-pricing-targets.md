@@ -3,7 +3,7 @@
 * **ID / Code:** UC-11
 * **Use Case Name:** Configure Standard Pricing & Targets
 * **Description:** Allows the Super-Administrator to define standard pricing structures, price ranges per plan/revenue tier and the approval thresholds for discounts, and to set purely informational monthly billing and collection targets.
-* **Primary Actor:** Super-Administrator
+* **Primary Actor:** Super-Administrator; Administrator for informational targets only.
 * **Scope:** Subscription Management & Invoicing System
 * **Level:** User Goal
 * **Stakeholders & Interests:**
@@ -12,17 +12,16 @@
   * *Company (Product Owner):* Wants price consistency and no impact of targets on billing calculations.
 * **Preconditions:** The Super-Administrator is authenticated (UC-01).
 * **Postconditions:** New pricing structures, ranges, thresholds and targets are in force for future operations.
-* **Success Guarantee:** Configuration is saved separately from operational data (NFR-2.7), versioned with user and timestamp, and applied only to future invoices (no retroactive changes).
+* **Success Guarantee:** Configuration is saved separately from operational data (NFR-2.7) and changes do not retroactively modify apst invoices.
 * **Minimal Guarantee:** Informational targets never alter billing calculations or workflows (FR-6.5); existing issued invoices are never modified.
 * **Trigger:** The Super-Administrator selects "Pricing configuration".
 * **Main Success Scenario:**
 1. **Super-Administrator:** Requests to configure standard pricing.
 2. **System:** Displays current plans, standard prices, price ranges by revenue tier, discount approval thresholds and monthly targets.
 3. **Super-Administrator:** Modifies prices, ranges, thresholds and/or informational billing and collection targets and saves.
-4. **System:** Validates consistency (minimum ≤ maximum, positive values, exact decimal precision – NFR-2.5).
-5. **System:** Shows the impact: existing subscriptions whose price falls outside the new ranges.
-6. **Super-Administrator:** Confirms the changes.
-7. **System:** Saves the new configuration version, logs the change and flags affected subscriptions as "Pending Review" (FR-2.6.1) for UC-12.
+4. **System:** Validates the entered values using exact decimal precision (NFR-2.5).
+5. **Super-Administrator:** Confirms the changes.
+6. **System:** Saves the new configuration and flags price inconsistencies as "Pending Review" (FR-2.6.1) for UC-12.
 
 * **Extensions:**
   * 3a. Only informational targets are modified:
