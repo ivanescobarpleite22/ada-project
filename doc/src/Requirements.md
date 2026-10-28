@@ -160,13 +160,15 @@
 
 ## **4. Non-Functional Requirements (NFRs)**
 
+The numerical thresholds and acceptance criteria defined in this section are initial engineering proposals based on the anticipated usage of the system. Where the client has not provided explicit performance or usability targets, reasonable values have been established by the development team and remain subject to client validation.
+
 ### **1. Performance & Usability**
 
-* **NFR-1.1 Efficiency:** The system shall allow internal users to complete common administrative tasks (searching for customers, viewing invoices, and reviewing unmatched payments) within a maximum of [T] seconds and [C] user interactions per task, under defined usability testing conditions.
-  * **Verification:** Conduct usability tests involving customer searches, invoice viewing, and unmatched payment reviews. Measure task completion times and user interactions. Each task must be completed within [T] seconds and [C] interactions.
+* **NFR-1.1 Efficiency:** The system shall allow internal users to search for customers and view their invoices within 30 seconds and a maximum of 5 user interactions per task. Reviewing the details of an unmatched payment shall take no more than 120 seconds and 10 user interactions, under standardized usability testing conditions.
+  * **Verification:** Conduct usability tests with representative internal users using predefined customer, invoice, and unmatched payment records. Measure completion times and user interactions for each task. All specified limits must be satisfied.
 
-* **NFR-1.2 Ease of Use:** During usability testing with [N] representative internal employees, at least [P]% of participants shall successfully complete the selected administrative tasks without assistance or prior training.
-  * **Verification:** Conduct usability tests with [N] representative employees who have not received prior training. Record successful task completions. At least [P]% of participants must complete the selected tasks without assistance.
+* **NFR-1.2 Ease of Use:** During usability testing with 10 representative internal employees, at least 80% of participants shall successfully complete the selected administrative tasks without assistance or prior training.
+  * **Verification:** Conduct usability tests with 10 representative employees who have not received prior training. At least 8 participants must independently complete all selected tasks successfully.
 
 * **NFR-1.3 Transaction Speed:** Payment-status checks must process and reflect in the system within **1 minute**.
   * **Verification:** Measure the time between submitting a payment-status check request and displaying the resulting status. The total duration must not exceed 60 seconds.
@@ -180,14 +182,15 @@
 * **NFR-1.6 Distinct Exceptions:** Errors must be clearly separated (e.g., "Invoice could not be created" vs. "Invoice was created but could not be sent").
   * **Verification:** Simulate invoice creation failures and notification delivery failures independently. Each scenario must produce a distinct error message correctly describing the failed operation.
 
-* **NFR-1.7 Accessibility Standards:** Controls must work without mouse hover, utilizing proper labels, contrast, keyboard support, and understandable error messages.
-  * **Verification:** Perform keyboard-navigation, screen-reader labeling, and contrast tests against the agreed accessibility standard. Essential controls must be operable without mouse hover, correctly labeled, and accessible through keyboard navigation.
+* **NFR-1.7 Accessibility Standards:** The system shall comply with Web Content Accessibility Guidelines (WCAG) 2.2 Level AA. All essential controls must support keyboard navigation, appropriate labels, sufficient color contrast, and understandable error messages without requiring mouse hover.
+  * **Verification:** Conduct automated accessibility scans and manual keyboard-navigation and screen-reader tests against WCAG 2.2 Level AA success criteria. All applicable Level A and AA criteria must be satisfied.
+
 
 
 ### **2. Scalability & System Integrity**
 
-* **NFR-2.1 Scalability:** The system shall support at least [U] concurrent users and [R] customer records while maintaining a 95th-percentile response time of no more than [S] seconds for common operations, including customer searches, invoice retrieval, and dashboard loading, under defined load-testing conditions.
-  * **Verification:** Perform load tests using [U] concurrent users and [R] customer records. Measure response times for customer searches, invoice retrieval, and dashboard loading. The 95th-percentile response time must not exceed [S] seconds.
+* **NFR-2.1 Scalability:** The system shall support at least 50 concurrent users and 10,000 customer records while maintaining a 95th-percentile response time of no more than 3 seconds for customer searches, invoice retrieval, and dashboard loading under defined load-testing conditions.
+  * **Verification:** Perform load tests with 50 concurrent users and a database containing at least 10,000 customer records. Measure response times for the specified operations. The 95th-percentile response time for each operation must not exceed 3 seconds.
 
 * **NFR-2.2 Data Integrity:** The system shall ensure that database operations involving customer records, invoices, and payments are executed atomically, preventing incomplete or partially committed transactions. If an operation fails, its database changes shall be rolled back. Repeated processing of the same request or bank transaction shall not create duplicate financial records. All operations shall preserve database integrity constraints, and integration failures shall be logged for recovery or manual review.
   * **Verification:** Simulate transaction failures, duplicate requests, and database constraint violations. Verify that failed operations are rolled back, duplicate financial records are not created, database constraints remain satisfied, and integration errors are logged for recovery or manual review.
@@ -216,20 +219,20 @@
 * **NFR-3.1 Cross-Device Compatibility:** The system must be accessible via a responsive web application or mobile-friendly interface, allowing users to perform administrative tasks from any location.
   * **Verification:** Test representative administrative workflows using desktop, tablet, and mobile screen sizes. Essential functions must remain accessible and usable without losing required information or functionality.
 
-* **NFR-3.2 Browser Compatibility:** The system must be compatible with modern browsers, both for PC (Chrome, Mozilla) and Mobile (iOS, Android).
-  * **Verification:** Execute the same critical workflow tests on the agreed versions of Chrome, Firefox, and supported mobile browsers on iOS and Android. All tested workflows must complete successfully without browser-specific failures.
+* **NFR-3.2 Browser Compatibility:** The system shall support the latest two stable major versions of Google Chrome, Mozilla Firefox, Microsoft Edge, and Safari on supported desktop platforms, as well as Safari on iOS and Chrome on Android.
+  * **Verification:** Execute the same critical administrative workflow tests across the specified browsers and their supported versions. All critical workflows must complete successfully without browser-specific errors or loss of functionality.
 
 
 ### **4. Data Synchronization & Consistency**
 
-* **NFR-4.1 Real-Time Synchronization:** The system shall propagate successfully committed changes to customer records, invoice statuses, payment records, and notification statuses across all relevant modules within a maximum of [D] seconds. All modules shall display consistent information after synchronization, and synchronization failures shall be logged and reported to administrators.
-  * **Verification:** Modify customer information, invoice statuses, payment records, and notification statuses in one module. Measure the time required for each change to appear in related modules. Synchronization must complete within [D] seconds, and simulated synchronization failures must be logged and reported to administrators.
+* **NFR-4.1 Real-Time Synchronization:** The system shall propagate successfully committed changes to customer records, invoice statuses, payment records, and notification statuses across all relevant modules within a maximum of 5 seconds. All modules shall display consistent information after synchronization, and synchronization failures shall be logged and reported to administrators.
+  * **Verification:** Update customer information, invoice statuses, payment records, and notification statuses in one module. Measure the time required for each committed change to appear in related modules. Synchronization must complete within 5 seconds, and simulated synchronization failures must be logged and reported.
 
 
 ### **5. Security & Data Privacy**
 
-* **NFR-5.1 Confidentiality:** All sensitive customer data (including company names, tax identification numbers, and contact details) must be encrypted and protected against unauthorized access in compliance with data privacy regulations.
-  * **Verification:** Review encryption configurations and perform unauthorized-access tests. Verify that sensitive information is protected using approved encryption controls and that unauthorized access attempts are rejected without exposing customer data.
+* **NFR-5.1 Confidentiality:** The system shall protect sensitive customer information, including company names, tax identification numbers, and contact details, through AES-256 encryption for stored data and backups, and TLS 1.3 for data transmitted over networks (allowing TLS 1.2 where compatibility requires it). User passwords shall be stored using salted Argon2id password hashes. Access to sensitive information shall be restricted according to authenticated user roles and assigned permissions.
+  * **Verification:** Inspect database and backup encryption configurations, verify supported TLS versions, and review password storage mechanisms. Perform authorization tests using accounts with different roles and customer assignments. Sensitive data must be encrypted, passwords must not be stored in plaintext, and unauthorized access attempts must be rejected without exposing confidential information.
 
 * **NFR-5.2 PDF Preservation vs. Anonymization:** Historical invoice PDFs and legally required accounting documents must remain accessible and unaltered throughout their applicable statutory retention periods, even when personal contact data is anonymized or deleted.
   * **Verification:** Anonymize or delete personal contact information in a test customer record and inspect its associated historical invoices. Legally required documents must remain accessible and unchanged, with retention controls enforcing the applicable statutory periods.
